@@ -12,18 +12,23 @@ if(isset($_GET["q"])) {
     
     <div class="grid-container">
 _END;
-//get all books currently out by this user.
     $q = escape($_GET["q"]);
-    $query = "Select (Title,Author,Description,YearOfPublication,fType,ISBN) from Title where Title like '$q' or Author like '$q' or Description like '$q' and (SELECT COUNT(CopyID) from Assets where Title.ISBN = Assets.ISBN) > 0 LIMIT 25";
+    $query = "Select Title,Author,Description,YearOfPublication,fType,ISBN from Title where Title like '%$q%' or Author like '%$q%' or Description like '%$q%' LIMIT 25";
     $books = mrQuery($query);
     for ($i = 0; $i < count($books); ++$i) {
+        $img = "./pics/". $books[$i][5] . "." .$books[$i][4];
+        $title = $books[$i][0];
+        $author = $books[$i][1];
+        $year = $books[$i][3];
+        $desc = $books[$i][2];
+        $ISBN = $books[$i][5];
         echo <<<_END
         <div class="grid-item">
-            <img src="$books[$i][5].$books[$i][4]">
-            <h2>$books[$i][0]</h2>
-            <h3>$books[$i][1] - $books[$i][3]</h3>
-            <p>$books[$i][2]</p>
-            <a href="./hold.php?q=$books[$i][5]">Place Hold</a>
+            <img src="$img">
+            <h2>$title</h2>
+            <h3>$author - $year</h3>
+            <p>$desc</p>
+            <a href="./hold.php?q=$ISBN">Place Hold</a>
         </div>
 _END;
 

@@ -3,14 +3,11 @@ session_start();
 $fname = $_SESSION["fname"];
 $isLoggedIn = isset($_SESSION["username"]);
 $level = $_SESSION["level"]; //0 being patron, 1 being librarian and 2 being admin
-$conn = new mysqli('localhost','bowermaj','password','bowermaj_db'); // this is where the db connection is defined for the entire program.
+$conn = new mysqli('localhost','bowermaj_db','password','bowermaj_db'); // this is where the db connection is defined for the entire program.
 //We need to fetch the branch details.
 $query = "Select (Name) from Branch where BranchID = 0";
-$result = $conn->query($query);
-if(!$result) die("Database access failed: nav" . $conn->error);
-if($result->num_rows != 1){
-   die("Unable to retrieve branch information");
-}
+$row = srQuery($query);
+$libraryName = $row[0];
 echo <<<_END
 <!DOCTYPE html>
 <head>
@@ -36,8 +33,7 @@ if($isLoggedIn){
             <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown">
-            <li><a href="./account.php">My Account</a></li>
-            <li><a href="./books.php">My Books</a></li>
+            <li><a href="./pass.php">Change Password</a></li>
 _END;
     if($level >= 1){//librarian or admin
         echo <<<_END
@@ -78,7 +74,7 @@ _END;
     //this will return a single row result for the supplied query
     //Note this will die if there is no resultant row.
     function srQuery($query){
-        $conn = new mysqli('localhost','bowermaj','password','bowermaj_db');
+        $conn = new mysqli('localhost','bowermaj_db','password','bowermaj_db');
         $result = $conn->query($query);
         if(!$result) die("Database access failed: " . $conn->error);
         if($result->num_rows != 1){
@@ -91,12 +87,12 @@ _END;
 
     //this function cleans a string.
     function escape($string){
-        $conn = new mysqli('localhost','bowermaj','password','bowermaj_db');
+        $conn = new mysqli('localhost','bowermaj_db','password','bowermaj_db');
         return mysqli_real_escape_string($conn,$string);
     }
 
     function mrQuery($query){
-        $conn = new mysqli('localhost','bowermaj','password','bowermaj_db');
+        $conn = new mysqli('localhost','bowermaj_db','password','bowermaj_db');
         $result = $conn->query($query);
         $arr =[];
         $arr;

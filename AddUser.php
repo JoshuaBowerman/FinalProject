@@ -18,13 +18,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $level= $_POST["level"];
     $_level = mysqli_real_escape_string($conn,$level);
     $phash = password_hash($password,PASSWORD_DEFAULT);
-    if(level <= $_SESSION['level']) {
+    if($level <= $_SESSION['level']) {
 
-    $query = "Insert into Users (firstname,lastname,email,PasswordHash,UserLevel,IsTemporary) VALUES ('$_first','$_last','$_email','$phash',$_level,true)";
-    $conn->query($query);
-    echo "<h2> Success! Temporary Password is ".$_POST["pword"]." </h2>";
-}else {
-    echo "<h2> Unable to add user due to invalid user level!</h2>";
+        $query = "Insert into users (firstname,lastname,email,PasswordHash,UserLevel,IsTemporary) VALUES ('$_first','$_last','$_email','$phash','$_level',true)";
+        mrQuery($query);
+        echo "<h2> Success! Temporary Password is ".$_POST["pword"]." </h2>";
+    }else {
+        echo "<h2> Unable to add user due to invalid user level!</h2>";
 }}
 echo <<<_END
 <h1> Checkout </h1>

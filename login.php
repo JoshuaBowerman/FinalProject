@@ -1,6 +1,6 @@
 <?php // login.php
     session_start();
-$conn = new mysqli('localhost','bowermaj','password','bowermaj_db'); // this is where the db connection is defined for the entire program.
+$conn = new mysqli('localhost','bowermaj_db','password','bowermaj_db'); // this is where the db connection is defined for the entire program.
 	if(isset($_SESSION["username"])){
 
         if(basename($_SERVER['PHP_SELF']) == 'login.php'){
